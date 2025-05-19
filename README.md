@@ -24,6 +24,7 @@ cp .env.example .env
 
 Если нужен inline_mode, включите его через @BotFather для нужного бота
 
+Далее выполните следующие команды:
 ```bash
 uv venv
 uv sync
@@ -39,3 +40,6 @@ uv run main.py
 # или без uv 
 python main.py
 ```
+
+----
+в Windows/MacOS код не тестировался 
