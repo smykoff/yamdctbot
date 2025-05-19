@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js"></script>
+
+  <title>Redirect link</title>
+
+  <script>
+    const hash = window.location.hash.substring(1);
+    const params = new URLSearchParams(hash);
+
+    const accessToken = params.get('access_token');
+    // const tokenType = params.get('token_type');
+    // const expiresIn = params.get('expires_in');
+  </script>
+</head>
+
+<body>
+  <div class="h-screen bg-neutral-950 text-neutral-300 flex items-center justify-center">
+    <div class="w-full max-w-prose px-6">
+      <h1 class="text-3xl font-bold mb-4">Это техническая страница</h1>
+
+      <p>должна закрыться сама, если не произошло никаких ошибок</p>
+    </div>
+  </div>
+
+  <script>
+    const query = new URLSearchParams(window.location.search);
+    const login_hash = query.get('hash')
+
+    const origin = window.location.protocol + '//' + window.location.host;
+
+    if (login_hash && accessToken) {
+      fetch("/save_user_token/" + login_hash, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ya_token: accessToken })
+      })
+        .then(r => {
+          YaSendSuggestToken(origin + "/" + login_hash, { flag: true })
+          window.close()
+        })
+        .catch(() => {
+          YaSendSuggestToken(origin + "/" + login_hash, { flag: false })
+          window.close()
+        })
+    }
+  </script>
+</body>
+
+</html>

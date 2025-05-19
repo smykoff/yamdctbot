@@ -1,0 +1,5 @@
+.env
+.venv
+m1lav.py
+__pycache__
+db.sqlite

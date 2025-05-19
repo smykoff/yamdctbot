@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"></script>
+
+  <title>Добро пожаловать</title>
+</head>
+
+<body>
+  <div class="h-screen bg-neutral-950 text-neutral-300 flex items-center justify-center">
+    <div class="w-full max-w-prose px-6">
+      <h1 class="text-3xl font-bold mb-4">Добро пожаловать,</h1>
+
+      <p class="mb-4" id="log">
+        чтобы залогиниться в бота нажмите кнопку ниже
+      </p>
+
+      <div id="ya"></div>
+    </div>
+  </div>
+
+  <script>
+    const $log = document.querySelector('#log')
+    const query = new URLSearchParams(window.location.search)
+    const origin = window.location.protocol + '//' + window.location.host;
+    const hash = window.location.pathname.replace("/", "")
+
+    const client_id = "{{ client_id }}"
+
+    window.YaAuthSuggest.init(
+      {
+        client_id,
+        response_type: "token",
+        redirect_uri: `${origin}/ya_redirect?hash=${hash}`
+      },
+      origin,
+      {
+        view: "button",
+        parentId: "ya",
+        buttonSize: 'm',
+        buttonView: 'main',
+        buttonTheme: 'dark',
+        buttonBorderRadius: "22",
+        buttonIcon: 'ya',
+      }
+    )
+      .then(({ handler }) => handler())
+      .then(data => {
+        $log.innerHTML = 'Готово. Можно закрыть это окно'
+        window.close()
+      })
+      .catch(error => {
+        $log.innerHTML = 'Неизвестная ошибка :('
+        console.log('Обработка ошибки', error)
+      })
+  </script>
+</body>
+
+</html>
