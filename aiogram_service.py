@@ -21,10 +21,11 @@ def on_shutdown():
 async def on_startup(bot: BotClass):
     commands = [
         BotCommand(command="/start", description="Начало работы"),
-        # BotCommand(command="/token", description="Узнать как получить токен"),
-        # BotCommand(command="/login", description="Установить токен"),
-        # BotCommand(command="/unlogin", description="Удалить токен"),
         BotCommand(command="/track", description="Текущий трек"),
+        
+        BotCommand(command="/token", description="Узнать как получить токен"),
+        BotCommand(command="/login", description="Установить токен вручную"),
+        BotCommand(command="/unlogin", description="Удалить токен"),
     ]
     
     await bot.set_my_commands(commands)

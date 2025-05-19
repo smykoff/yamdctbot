@@ -12,12 +12,10 @@ from models import User
 start_router = Router()
 
 API_URL = getenv("API_URL")
+YA_CLIENT_ID = getenv("YA_CLIENT_ID")
 
 @start_router.message(CommandStart())
-async def command_start_handler(message: Message) -> None:
-    if not API_URL:
-        message.answer("Бот не настроен")
-    
+async def command_start_handler(message: Message) -> None:    
     if not message.from_user:
         logger.info("message.from_user is None")
         return
@@ -41,8 +39,17 @@ async def command_start_handler(message: Message) -> None:
     session.commit()
     
     await message.answer(f"Здарова, {html.bold(message.from_user.full_name)}")
-    await message.answer(f"Чтобы начать пользоваться ботом, нужно {html.link("залогиниться", f"{API_URL}/{user.login_hash}")}.")
-    await message.answer("После того, как ты залогинишься, можешь использовать написать @yamdctbot в любом чате и я покажу тебе, какой трек сейчас у тебя играет")
+    
+    if API_URL and YA_CLIENT_ID:
+        await message.answer(f"Чтобы начать пользоваться ботом, нужно {html.link("залогиниться", f"{API_URL}/{user.login_hash}")}.")
+    else:
+        await message.answer(f"Чтобы начать пользоваться ботом, нужно ввести команду /login и установить токен")
+        await message.answer(f"Информация по получению токена: /token")
+    
+    bot_info = await message.bot.get_me()
+    username = bot_info.username
+    
+    await message.answer(f"После того, как ты залогинишься, можешь написать @{username} в любом чате и я покажу тебе, какой трек сейчас у тебя играет")
     await message.answer("Ну или просто напиши мне /track")
 
 

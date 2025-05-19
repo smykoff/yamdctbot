@@ -75,7 +75,7 @@ async def get_current_track(token: str):
     ynison["player_state"]["player_queue"]["current_playable_index"]
   ]
   
-  return await get_track_by_id(track["playable_id"])
+  return await get_track_by_id(token, track["playable_id"])
   
 
 def generate_device_id(length: int = 16) -> str:
@@ -96,11 +96,11 @@ async def create_ynison_ws(ya_token: str, ws_proto: dict) -> dict:
       return json.loads(response.data)
 
 
-async def get_track_by_id(track_id: int):
-  if not YA_TOKEN:
-    raise Exception('YA_TOKEN is not specified')
+async def get_track_by_id(token, track_id: int):
+  if YA_TOKEN:
+    token = YA_TOKEN
   
-  client = ClientAsync(YA_TOKEN)
+  client = ClientAsync(token)
   await client.init()
   
   try:

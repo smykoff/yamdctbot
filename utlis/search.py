@@ -36,10 +36,3 @@ async def format_track(track: Track):
     'title': track.title,
     'artist': ", ".join(track.artists_name())
   }
-  
-
-# load_dotenv()
-
-# asyncio.run(
-#   get_current_track(os.getenv('YA_TOKEN') or "", 'yanix')
-# )
