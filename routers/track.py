@@ -20,7 +20,7 @@ async def inline_handler(message: Message):
     session = get_session()
     user = session.query(User).filter(User.telegram_id == message.from_user.id).first()
 
-    if not user:
+    if not user or not user.ya_token:
         await message.answer("Залогиниться надо в боте")
         return
     
