@@ -20,7 +20,7 @@ async def inline_handler(inline_query: InlineQuery):
     session = get_session()
     user = session.query(User).filter(User.telegram_id == inline_query.from_user.id).first()
 
-    if not user:
+    if not user or not user.ya_token:
         error = create_error_result(description="Залогиниться надо в боте", id="error-login")
         
         await inline_query.answer([error])
