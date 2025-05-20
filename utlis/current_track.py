@@ -3,7 +3,8 @@ from os import getenv
 import random
 import string
 import aiohttp
-from yandex_music import ClientAsync
+
+from ya_client import YandexMusicClient
 
 YA_TOKEN = getenv('YA_TOKEN')
 
@@ -100,21 +101,19 @@ async def get_track_by_id(token, track_id: int):
   if YA_TOKEN:
     token = YA_TOKEN
   
-  client = ClientAsync(token)
-  await client.init()
-  
-  try:
-    track, *_ = await client.tracks(track_id)    
-    download_info, *_ = await track.get_download_info_async(get_direct_links=True)
-    
-    return {
-      'id': track_id,
-      'download_link': download_info.direct_link,
-      'cover_link': f"https://{track.cover_uri[:-2]}1000x1000" if track.cover_uri else None,
-      'duration': track.duration_ms // 1000 if track.duration_ms else None,
-      'title': track.title,
-      'artist': ", ".join(track.artists_name())
-    }
+  async with YandexMusicClient(token) as client:
+    try:
+      track, *_ = await client.tracks(track_id)    
+      download_info, *_ = await track.get_download_info_async(get_direct_links=True)
+      
+      return {
+        'id': track_id,
+        'download_link': download_info.direct_link,
+        'cover_link': f"https://{track.cover_uri[:-2]}1000x1000" if track.cover_uri else None,
+        'duration': track.duration_ms // 1000 if track.duration_ms else None,
+        'title': track.title,
+        'artist': ", ".join(track.artists_name())
+      }
 
-  except Exception as e:
-    raise Exception("Track information could not be retrieved")
+    except Exception as e:
+      raise Exception("Track information could not be retrieved")

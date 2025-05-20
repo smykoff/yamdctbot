@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "aiogram>=3.20.0.post0",
+    "aiohttp-socks>=0.10.1",
     "aiohttp>=3.11.18",
     "dotenv>=0.9.9",
     "fastapi[standard]>=0.115.12",

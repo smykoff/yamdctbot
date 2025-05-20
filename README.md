@@ -14,6 +14,7 @@ cp .env.example .env
 - API_URL - url для обращения к текущему серверу (требуется для создания приложения в https://oauth.yandex.ru, SSL - обязателен)
 - YA_TOKEN - токен яндекс.музыки для скачивания треков - https://yandex-music.readthedocs.io/en/main/token.html
 - YA_CLIENT_ID - id приложения для аутентификации - https://oauth.yandex.ru/
+- PROXY_URL - при необходимости можете указать http-proxy (socks не поддерживается библиотекой yandex-music)
 - TG_TOKEN* - токен телеграм бота
 
 Если API_URL или YA_CLIENT_ID не установлены:
